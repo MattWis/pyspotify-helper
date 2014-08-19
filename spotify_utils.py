@@ -46,7 +46,6 @@ class Spotify:
     
     def _play_track_list(self, tracks):
         for track in tracks:
-            print track.name, track.availability
             if track.availability is spotify.TrackAvailability.AVAILABLE:
                 self._play(track)
                 while not self.end_of_track.wait(0.1):
