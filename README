@@ -1,0 +1,6 @@
+Pyspotify Utils
+
+This repository attempts to make it dead simple to integrate pyspotify.
+
+Note: You need to put your own Spotify credentials into credentials.py. They need to be credentials for a Spotify Premium account. 
+
