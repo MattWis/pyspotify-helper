@@ -30,6 +30,7 @@ I'm expecting you to have only one instance of the Spotify object around. I'm no
 There are five methods you will use: play_track, play_album, shuffle_album, play_artist, shuffle_artist
 
 All of the methods takes a string that will be searched for in Spotify. The first result (of the appropriate category) will be used. It will error on no results. (IndexError: list index out of range)
+The string given is searched as is. For info on how to search Spotify intelligently, go to http://news.spotify.com/us/2008/01/22/searching-spotify/.
 
 The play_* methods play through all tracks sequentially. The shuffle_* methods play through all tracks in a random order.
 

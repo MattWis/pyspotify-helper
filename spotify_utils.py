@@ -26,15 +26,15 @@ class Spotify:
     
     #Returns best track result, ignores all others
     def _search_for_track(self, term):
-        return self.session.search("title:" + term).load().tracks[0].load()
+        return self.session.search(term).load().tracks[0].load()
     
     #Returns best album result, ignores all others
     def _search_for_album(self, term):
-        return self.session.search("album:" + term).load().albums[0].load()
+        return self.session.search(term).load().albums[0].load()
     
     #Returns best artist result, ignores all others
     def _search_for_artist(self, term):
-        return self.session.search("artist:" + term).load().artists[0].load()
+        return self.session.search(term).load().artists[0].load()
     
     def _get_album_tracks(self, name):
         album = self._search_for_album(name)
@@ -51,7 +51,7 @@ class Spotify:
                 while not self.end_of_track.wait(0.1):
                     pass
                 self.end_of_track.clear()
-    
+
     def _shuffle_seq(self, track_seq):
         tracks = []
         for track in track_seq:
