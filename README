@@ -5,6 +5,7 @@ This repository attempts to make it as simple as possible to integrate pyspotify
 It's currently as simple as 
 >>> Spotify().play_album("Stadium Arcadium")
 
+
 Initialization:
 
 Sadly, that simplicity comes after some initialization steps. I'm looking into making these disappear.
