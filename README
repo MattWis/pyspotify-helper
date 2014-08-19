@@ -20,3 +20,13 @@ libspotify
 pyspotify
 
 Information on installing dependencies at http://pyspotify.mopidy.com/en/latest/installation/.
+
+
+TODO (As in, questions for you and my future self):
+
+The way I handle credentials makes me cringe. Is there a good way to do this?
+
+I currently have the spotify session configured to use a PortAudio sink. Is that better than an ALSA sink? Are there other types I should look into?
+
+How does searching work with playlists? More specifically, can I easily distinguish between owned playlists and other playlists? What about playlists with the same name?
+
