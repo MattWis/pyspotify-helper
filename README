@@ -30,3 +30,5 @@ I currently have the spotify session configured to use a PortAudio sink. Is that
 
 How does searching work with playlists? More specifically, can I easily distinguish between owned playlists and other playlists? What about playlists with the same name?
 
+How do I make this a thing that can be "pip install"-ed? 
+
