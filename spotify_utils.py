@@ -1,3 +1,5 @@
+import time
+from thread import start_new_thread
 import threading
 import spotify
 from random import shuffle
@@ -6,16 +8,16 @@ import credentials
 class Spotify:
     
     def play_track(self, name):
-        self._play(self._search_for_track(name))
+        start_new_thread(self._play, (self._search_for_track(name), ))
     
     def play_album(self, name):
-        self._play_track_list(self._get_album_tracks(name))
+        self._play_track_list_noblock(self._get_album_tracks(name))
     
     def shuffle_album(self, name):
         self._shuffle_seq(self._get_album_tracks(name))
     
     def play_artist(self, name):
-        self._play_track_list(self._get_artist_tracks(name))
+        self._play_track_list_noblock(self._get_artist_tracks(name))
     
     def shuffle_artist(self, name):
         self._shuffle_seq(self._get_artist_tracks(name))
@@ -43,6 +45,9 @@ class Spotify:
     def _get_artist_tracks(self, name):
         artist = self._search_for_artist(name)
         return artist.browse().load().tracks
+
+    def _play_track_list_noblock(self, tracks):
+        start_new_thread(self._play_track_list, (tracks, ))
     
     def _play_track_list(self, tracks):
         for track in tracks:
@@ -57,7 +62,7 @@ class Spotify:
         for track in track_seq:
             tracks.append(track)
         shuffle(tracks)
-        self._play_track_list(tracks)
+        self._play_track_list_noblock(tracks)
     
     def __init__(self):
         # Assuming a spotify_appkey.key in the current dir
@@ -87,4 +92,10 @@ class Spotify:
         self.end_of_track = end_of_track
 
 if __name__ == "__main__":
-    Spotify().play_album("Stadium Arcadium")
+    s = Spotify()
+    s.play_album("Stadium Arcadium")
+    time.sleep(3)
+    s.play_album("Red")
+
+    print "I can print while the song plays"
+    raw_input()

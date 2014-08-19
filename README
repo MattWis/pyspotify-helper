@@ -25,7 +25,7 @@ Information on installing dependencies at http://pyspotify.mopidy.com/en/latest/
 
 Usage:
 
-I'm expecting you to have only one instance of the Spotify object around. I'm not sure what will happen if you make more. Maybe the others will be logged out? 
+Only have one instance of the Spotify object around. There will be errors otherwise.
 
 There are five methods you will use: play_track, play_album, shuffle_album, play_artist, shuffle_artist
 
@@ -34,7 +34,9 @@ The string given is searched as is. For info on how to search Spotify intelligen
 
 The play_* methods play through all tracks sequentially. The shuffle_* methods play through all tracks in a random order.
 
-It's currently blocking. I want to make it non-blocking. (Since generally I want to tell a track to start playing, and do other things while it plays.)
+None of the methods block. They return immediately, while a different thread is started to play the music. 
+
+These methods will cancel the currently playing song when called. 
 
 
 TODO (As in, questions for you and my future self):
