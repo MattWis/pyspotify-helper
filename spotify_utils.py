@@ -53,7 +53,7 @@ class Spotify:
     for track in track_seq:
       tracks.append(track)
     shuffle(tracks)
-    self._play_track_list_noblock(tracks)
+    self._play_tracks(tracks)
   
   def __init__(self):
     # Assuming a spotify_appkey.key in the current dir
@@ -86,7 +86,7 @@ if __name__ == "__main__":
   s = Spotify()
   s.play_album("Stadium Arcadium")
   time.sleep(3)
-  s.play_album("Red")
+  s.shuffle_artist("Taylor Swift")
 
   print "I can print while the song plays"
   raw_input()
