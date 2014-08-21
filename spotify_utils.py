@@ -5,6 +5,8 @@ import spotify
 from random import shuffle
 import credentials
 
+if credentials.username == '' or credentials.password == '':
+    raise "Put your Spotify Pro account credentials in credentials.py"
 
 # Make Spotify a singleton object
 _spotify = None
