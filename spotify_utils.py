@@ -8,24 +8,24 @@ import credentials
 class Spotify:
   
   def play_track(self, name):
-    start_new_thread(lambda x: self._play(self._search(x, "tracks")),
-                     (name, ))
+    runner = lambda x: self._play(self._search(x, "tracks"))
+    start_new_thread(runner, (name, ))
   
   def play_album(self, name):
-    start_new_thread(lambda x: self._play_tracks(self._tracks(x, "albums")),
-                     (name, ))
+    runner = lambda x: self._play_tracks(self._tracks(x, "albums"))
+    start_new_thread(runner, (name, ))
   
   def shuffle_album(self, name):
-    start_new_thread(lambda x: self._shuffle_seq(self._tracks(x, "albums")),
-                     (name, ))
+    runner = lambda x: self._shuffle_seq(self._tracks(x, "albums"))
+    start_new_thread(runner, (name, ))
   
   def play_artist(self, name):
-    start_new_thread(lambda x: self._play_tracks(self._tracks(x, "artists")),
-                     (name, ))
+    runner = lambda x: self._play_tracks(self._tracks(x, "artists"))
+    start_new_thread(runner, (name, ))
   
   def shuffle_artist(self, name):
-    start_new_thread(lambda x: self._shuffle_seq(self._tracks(x, "artists")),
-                     (name, ))
+    runner = lambda x: self._shuffle_seq(self._tracks(x, "artists"))
+    start_new_thread(runner, (name, ))
   
   def _play(self, track):
     self.session.player.load(track)
