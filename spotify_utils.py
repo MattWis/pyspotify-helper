@@ -12,19 +12,19 @@ class Spotify:
     start_new_thread(runner, (name, ))
   
   def play_album(self, name):
-    runner = lambda x: self._play_tracks(self._tracks(x, "albums"))
+    runner = lambda x: self._play_tracks(self._get_tracks(x, "albums"))
     start_new_thread(runner, (name, ))
   
   def shuffle_album(self, name):
-    runner = lambda x: self._shuffle_seq(self._tracks(x, "albums"))
+    runner = lambda x: self._shuffle_seq(self._get_tracks(x, "albums"))
     start_new_thread(runner, (name, ))
   
   def play_artist(self, name):
-    runner = lambda x: self._play_tracks(self._tracks(x, "artists"))
+    runner = lambda x: self._play_tracks(self._get_tracks(x, "artists"))
     start_new_thread(runner, (name, ))
   
   def shuffle_artist(self, name):
-    runner = lambda x: self._shuffle_seq(self._tracks(x, "artists"))
+    runner = lambda x: self._shuffle_seq(self._get_tracks(x, "artists"))
     start_new_thread(runner, (name, ))
   
   def _play(self, track):
@@ -36,7 +36,7 @@ class Spotify:
   def _search(self, term, category):
     return getattr(self.session.search(term).load(), category)[0].load()
   
-  def _tracks(self, name, category):
+  def _get_tracks(self, name, category):
     grouping = self._search(name, category)
     return grouping.browse().load().tracks
 
