@@ -8,43 +8,32 @@ import credentials
 class Spotify:
     
     def play_track(self, name):
-        start_new_thread(self._play, (self._search_for_track(name), ))
+        start_new_thread(self._play, (self._search(name, "tracks"), ))
     
     def play_album(self, name):
-        self._play_track_list_noblock(self._get_album_tracks(name))
+        self._play_track_list_noblock(self._get_tracks(name, "albums"))
     
     def shuffle_album(self, name):
-        self._shuffle_seq(self._get_album_tracks(name))
+        self._shuffle_seq(self._get_tracks(name, "albums"))
     
     def play_artist(self, name):
-        self._play_track_list_noblock(self._get_artist_tracks(name))
+        self._play_track_list_noblock(self._get_tracks(name, "artists"))
     
     def shuffle_artist(self, name):
-        self._shuffle_seq(self._get_artist_tracks(name))
+        self._shuffle_seq(self._get_tracks(name, "artists"))
     
     def _play(self, track):
         self.session.player.load(track)
         self.session.player.play()
     
-    #Returns best track result, ignores all others
-    def _search_for_track(self, term):
-        return self.session.search(term).load().tracks[0].load()
+    #Returns best search result
+    #category is "tracks", "artists", or "albums"
+    def _search(self, term, category):
+        return getattr(self.session.search(term).load(), category)[0].load()
     
-    #Returns best album result, ignores all others
-    def _search_for_album(self, term):
-        return self.session.search(term).load().albums[0].load()
-    
-    #Returns best artist result, ignores all others
-    def _search_for_artist(self, term):
-        return self.session.search(term).load().artists[0].load()
-    
-    def _get_album_tracks(self, name):
-        album = self._search_for_album(name)
-        return album.browse().load().tracks
-    
-    def _get_artist_tracks(self, name):
-        artist = self._search_for_artist(name)
-        return artist.browse().load().tracks
+    def _get_tracks(self, name, category):
+        grouping = self._search(name, category)
+        return grouping.browse().load().tracks
 
     def _play_track_list_noblock(self, tracks):
         start_new_thread(self._play_track_list, (tracks, ))
