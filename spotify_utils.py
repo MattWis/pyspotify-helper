@@ -5,7 +5,16 @@ import spotify
 from random import shuffle
 import credentials
 
-class Spotify:
+
+# Make Spotify a singleton object
+_spotify = None
+def Spotify():
+  global _spotify
+  if _spotify is None:
+    _spotify = _Spotify()
+  return _spotify
+
+class _Spotify:
   
   def play_track(self, name):
     runner = lambda x: self._play(self._search(x, "tracks"))

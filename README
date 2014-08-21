@@ -25,8 +25,6 @@ Information on installing dependencies at http://pyspotify.mopidy.com/en/latest/
 
 Usage:
 
-Only have one instance of the Spotify object around. There will be errors otherwise.
-
 There are five methods you will use: play_track, play_album, shuffle_album, play_artist, shuffle_artist
 
 All of the methods takes a string that will be searched for in Spotify. The first result (of the appropriate category) will be used. It will error on no results. (IndexError: list index out of range)
@@ -36,7 +34,7 @@ The play_* methods play through all tracks sequentially. The shuffle_* methods p
 
 None of the methods block. They return immediately, while a different thread is started to play the music. 
 
-These methods will cancel the currently playing song when called. 
+These methods will cancel the currently playing song when called.
 
 
 TODO (As in, questions for you and my future self):
@@ -48,4 +46,3 @@ I currently have the spotify session configured to use a PortAudio sink. Is that
 How does searching work with playlists? More specifically, can I easily distinguish between owned playlists and other playlists? What about playlists with the same name?
 
 How do I make this a thing that can be "pip install"-ed? 
-
