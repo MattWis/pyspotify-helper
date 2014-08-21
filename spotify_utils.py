@@ -8,19 +8,24 @@ import credentials
 class Spotify:
     
     def play_track(self, name):
-        start_new_thread(self._play, (self._search(name, "tracks"), ))
+        start_new_thread(lambda x: self._play(self._search(x, "tracks")),
+                         (name, ))
     
     def play_album(self, name):
-        self._play_track_list_noblock(self._get_tracks(name, "albums"))
+        start_new_thread(lambda x: self._play_tracks(self._tracks(x, "albums")),
+                         (name, ))
     
     def shuffle_album(self, name):
-        self._shuffle_seq(self._get_tracks(name, "albums"))
+        start_new_thread(lambda x: self._shuffle_seq(self._tracks(x, "albums")),
+                         (name, ))
     
     def play_artist(self, name):
-        self._play_track_list_noblock(self._get_tracks(name, "artists"))
+        start_new_thread(lambda x: self._play_tracks(self._tracks(x, "artists")),
+                         (name, ))
     
     def shuffle_artist(self, name):
-        self._shuffle_seq(self._get_tracks(name, "artists"))
+        start_new_thread(lambda x: self._shuffle_seq(self._tracks(x, "artists")),
+                         (name, ))
     
     def _play(self, track):
         self.session.player.load(track)
@@ -31,14 +36,11 @@ class Spotify:
     def _search(self, term, category):
         return getattr(self.session.search(term).load(), category)[0].load()
     
-    def _get_tracks(self, name, category):
+    def _tracks(self, name, category):
         grouping = self._search(name, category)
         return grouping.browse().load().tracks
 
-    def _play_track_list_noblock(self, tracks):
-        start_new_thread(self._play_track_list, (tracks, ))
-    
-    def _play_track_list(self, tracks):
+    def _play_tracks(self, tracks):
         for track in tracks:
             if track.availability is spotify.TrackAvailability.AVAILABLE:
                 self._play(track)
