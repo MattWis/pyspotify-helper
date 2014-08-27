@@ -3,17 +3,13 @@ from thread import start_new_thread
 import threading
 import spotify
 from random import shuffle
-import credentials
-
-if credentials.username == '' or credentials.password == '':
-    raise "Put your Spotify Pro account credentials in credentials.py"
 
 # Make Spotify a singleton object
 _spotify = None
-def Spotify():
+def Spotify(profile = None):
   global _spotify
   if _spotify is None:
-    _spotify = _Spotify()
+    _spotify = _Spotify(profile)
   return _spotify
 
 class _Spotify:
@@ -65,8 +61,14 @@ class _Spotify:
       tracks.append(track)
     shuffle(tracks)
     self._play_tracks(tracks)
-  
-  def __init__(self):
+
+  def __init__(self, profile):
+    if not profile.has_key("spotify_name") or \
+       not profile.has_key("spotify_password") or \
+       profile["spotify_name"] is "" or \
+       profile["spotify_password"] is "":
+      raise("Pass in a profile with spotify_name and spotify_password")
+
     # Assuming a spotify_appkey.key in the current dir
     session = spotify.Session()
     loop = spotify.EventLoop(session)
@@ -86,18 +88,21 @@ class _Spotify:
     end_of_track = threading.Event()
     session.on(spotify.SessionEvent.CONNECTION_STATE_UPDATED, on_login)
     session.on(spotify.SessionEvent.END_OF_TRACK, on_end_of_track)
-    
-    session.login(credentials.username, credentials.password)
+
+    session.login(profile["spotify_name"], profile["spotify_password"])
     logged_in.wait()
 
     self.session = session
     self.end_of_track = end_of_track
 
 if __name__ == "__main__":
-  s = Spotify()
-  s.play_album("Stadium Arcadium")
-  time.sleep(3)
-  s.shuffle_artist("Taylor Swift")
+  #To use this example, fill in the empty 'profile.yml'
+  import yaml
+  profile = yaml.load(open("profile.yml", 'rb').read())
 
-  print "I can print while the song plays"
+  Spotify(profile).play_album("Stadium Arcadium")
+  time.sleep(3)
+  Spotify().shuffle_artist("Taylor Swift")
+
+  print("I can print while the song plays")
   raw_input()

@@ -2,17 +2,16 @@ Pyspotify Utils
 
 This repository attempts to make it as simple as possible to integrate pyspotify.
 
-It's currently as simple as 
->>> Spotify().play_album("Stadium Arcadium")
+It's currently as simple as
+>>> spotify_pro_credentials = { "spotify_name": "", "spotify_password": "" }
+>>> Spotify(spotify_pro_credentials).play_album("Stadium Arcadium")
 
 
 Initialization:
 
-Sadly, that simplicity comes after some initialization steps. I'm looking into making these disappear.
+Sadly, that simplicity comes after some initialization.
 
-You need to put your own Spotify credentials into credentials.py. They need to be credentials for a Spotify Premium account. 
-
-You also need a spotify_appkey.key in the root directory. You can get this following the tutorial at http://pyspotify.mopidy.com/en/latest/quickstart/#application-keys.
+You also a spotify_appkey.key in your project root directory. You can get this following the tutorial at http://pyspotify.mopidy.com/en/latest/quickstart/#application-keys.
 
 
 Dependencies:
@@ -36,6 +35,7 @@ None of the methods block. They return immediately, while a different thread is 
 
 These methods will cancel the currently playing song when called.
 
+Spotify() returns a singleton. The credentials only need to be passed in the first time you call the function. See the "if __name__ == '__main__':" section.
 
 TODO (As in, questions for you and my future self):
 
