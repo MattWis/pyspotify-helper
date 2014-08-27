@@ -31,18 +31,17 @@ The string given is searched as is. For info on how to search Spotify intelligen
 
 The play_* methods play through all tracks sequentially. The shuffle_* methods play through all tracks in a random order.
 
-None of the methods block. They return immediately, while a different thread is started to play the music. 
+None of the methods block. They return immediately, while a different thread is started to play the music.
 
 These methods will cancel the currently playing song when called.
 
 Spotify() returns a singleton. The credentials only need to be passed in the first time you call the function. See the "if __name__ == '__main__':" section.
 
-TODO (As in, questions for you and my future self):
 
-The way I handle credentials makes me cringe. Is there a good way to do this?
+TODO (As in, questions for you and my future self):
 
 I currently have the spotify session configured to use a PortAudio sink. Is that better than an ALSA sink? Are there other types I should look into?
 
 How does searching work with playlists? More specifically, can I easily distinguish between owned playlists and other playlists? What about playlists with the same name?
 
-How do I make this a thing that can be "pip install"-ed? 
+How do I make this a thing that can be "pip install"-ed?
