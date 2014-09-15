@@ -26,7 +26,7 @@ Usage:
 
 There are five methods you will use to play tracks: play_track, play_album, shuffle_album, play_artist, shuffle_artist
 
-There are three methods to pause and resume: pause, resume, and pause_toggle.
+There are four methods to control playback: next_track, pause, resume, and pause_toggle.
 
 All of the play methods takes a string that will be searched for in Spotify. The first result (of the appropriate category) will be used. It will error on no results. (IndexError: list index out of range)
 The string given is searched as is. For info on how to search Spotify intelligently, go to http://news.spotify.com/us/2008/01/22/searching-spotify/.

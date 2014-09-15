@@ -17,22 +17,32 @@ class _Spotify:
   def play_track(self, name):
     runner = lambda x: self._play(self._search(x, "tracks"))
     start_new_thread(runner, (name, ))
+    self.playing = True
 
   def play_album(self, name):
     runner = lambda x: self._play_tracks(self._get_tracks(x, "albums"))
     start_new_thread(runner, (name, ))
+    self.playing = True
 
   def shuffle_album(self, name):
     runner = lambda x: self._shuffle_seq(self._get_tracks(x, "albums"))
     start_new_thread(runner, (name, ))
+    self.playing = True
 
   def play_artist(self, name):
     runner = lambda x: self._play_tracks(self._get_tracks(x, "artists"))
     start_new_thread(runner, (name, ))
+    self.playing = True
 
   def shuffle_artist(self, name):
     runner = lambda x: self._shuffle_seq(self._get_tracks(x, "artists"))
     start_new_thread(runner, (name, ))
+    self.playing = True
+
+  def next_track(self):
+    # Seek to the end of the song, 10,000,000 milliseconds > 2.5 hours
+    self.session.player.seek(10000000)
+    self.playing = True
 
   def pause_toggle(self):
     if self.playing is None:
@@ -120,7 +130,7 @@ if __name__ == "__main__":
   time.sleep(2)
   Spotify().pause_toggle()
   time.sleep(2)
-  Spotify().pause_toggle()
+  Spotify().next_track()
   time.sleep(2)
   Spotify().shuffle_artist("Taylor Swift")
 
