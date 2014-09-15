@@ -34,6 +34,20 @@ class _Spotify:
     runner = lambda x: self._shuffle_seq(self._get_tracks(x, "artists"))
     start_new_thread(runner, (name, ))
 
+  def pause_toggle(self):
+    if self.playing is None:
+      self.playing = True
+    self.playing = not self.playing
+    self.session.player.play(self.playing)
+
+  def pause(self):
+    self.playing = False
+    self.session.player.pause()
+
+  def resume(self):
+    self.playing = True
+    self.session.player.play()
+
   def _play(self, track):
     self.session.player.load(track)
     self.session.player.play()
@@ -94,6 +108,7 @@ class _Spotify:
 
     self.session = session
     self.end_of_track = end_of_track
+    self.playing = None
 
 if __name__ == "__main__":
   #To use this example, fill in the empty 'profile.yml'
@@ -101,8 +116,13 @@ if __name__ == "__main__":
   profile = yaml.load(open("profile.yml", 'rb').read())
 
   Spotify(profile).play_album("Stadium Arcadium")
-  time.sleep(3)
+  print("I can print while the song plays")
+  time.sleep(2)
+  Spotify().pause_toggle()
+  time.sleep(2)
+  Spotify().pause_toggle()
+  time.sleep(2)
   Spotify().shuffle_artist("Taylor Swift")
 
-  print("I can print while the song plays")
+
   raw_input()
