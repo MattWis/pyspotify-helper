@@ -75,7 +75,7 @@ class _Spotify:
     loop.start()
 
     # Connect an audio sink
-    audio = spotify.PortAudioSink(session)
+    audio = spotify.AlsaSink(session)
 
     def on_login(session):
       if session.connection.state is spotify.ConnectionState.LOGGED_IN:
