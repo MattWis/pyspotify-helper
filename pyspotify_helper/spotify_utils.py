@@ -2,6 +2,7 @@ from thread import start_new_thread
 import threading
 import spotify
 from random import shuffle
+from Queue import Queue
 
 # Make Spotify a singleton object
 _spotify = None
@@ -42,15 +43,27 @@ class _Spotify:
     self.session.player.play()
 
   def _search_and_play(self, name, category, shuffle):
+    self._clear_queue()
     if category == "tracks":
-      self._play(self._search(x, category))
+      self._play(self._search(name, category))
     else:
       track_list = self._get_tracks(name, category)
+      if category == "artists":
+        #TODO: The first artist on the first track isn't necessarily correct
+        artist = track_list[0].artists[0]
+        track_list = filter(lambda x: artist in x.artists, track_list)
       if shuffle:
         self._shuffle_seq(track_list)
       else:
-        self._play_tracks(track_list)
+        self._queue_tracks(track_list)
     self.playing = True
+
+  def _clear_queue(self):
+    while not self.track_queue.empty():
+      try:
+        self.track_queue.get(False)
+      except Empty:
+        continue
 
   #Returns best search result
   def _search(self, term, category):
@@ -60,20 +73,27 @@ class _Spotify:
     grouping = self._search(name, category)
     return grouping.browse().load().tracks
 
-  def _play_tracks(self, tracks):
-    for track in tracks:
+  def _play_from_queue(self):
+    while True:
+      track = self.track_queue.get()
       if track.availability is spotify.TrackAvailability.AVAILABLE:
         self._play(track)
         while not self.end_of_track.wait(0.1):
           pass
         self.end_of_track.clear()
 
+  def _queue_tracks(self, tracks):
+    for track in tracks:
+      self.track_queue.put(track)
+    if self.playing == True:
+      self.next_track()
+
   def _shuffle_seq(self, track_seq):
     tracks = []
     for track in track_seq:
       tracks.append(track)
     shuffle(tracks)
-    self._play_tracks(tracks)
+    self._queue_tracks(tracks)
 
   def __init__(self, profile):
     if not profile.has_key("spotify_name") or \
@@ -108,6 +128,8 @@ class _Spotify:
     self.session = session
     self.end_of_track = end_of_track
     self.playing = None
+    self.track_queue = Queue()
+    start_new_thread(self._play_from_queue, ())
 
 if __name__ == "__main__":
   #To use this example, fill in the empty 'profile.yml'
@@ -120,8 +142,9 @@ if __name__ == "__main__":
   time.sleep(2)
   Spotify().pause_toggle()
   time.sleep(2)
-  Spotify().next_track()
+  Spotify().pause_toggle()
   time.sleep(2)
   Spotify().play("Taylor Swift", "artists", True)
 
-  raw_input()
+  while True:
+    exec(raw_input(">>> "))
