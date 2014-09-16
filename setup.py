@@ -8,5 +8,6 @@ setup(name='pyspotify_helper',
       description='Simplest integration of Spotify into Python',
       license='MIT',
       packages=['pyspotify_helper'],
+      package_dir={'pyspotify_helper': 'pyspotify_helper'},
       url='https://github.com/MattWis/pyspotify_helper.git',
       install_requires=['pyspotify'])
