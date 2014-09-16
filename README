@@ -3,6 +3,9 @@ Pyspotify Utils
 This repository attempts to make it as simple as possible to integrate pyspotify.
 
 It's currently as simple as
+# pip install pyspotify_helper
+# python
+>>> from pyspotify_helper import Spotify
 >>> spotify_pro_credentials = { "spotify_name": "", "spotify_password": "" }
 >>> Spotify(spotify_pro_credentials).play("Stadium Arcadium", "albums")
 
