@@ -1,4 +1,3 @@
-import time
 from thread import start_new_thread
 import threading
 import spotify
@@ -123,6 +122,7 @@ class _Spotify:
 if __name__ == "__main__":
   #To use this example, fill in the empty 'profile.yml'
   import yaml
+  import time
   profile = yaml.load(open("profile.yml", 'rb').read())
 
   Spotify(profile).play_album("Stadium Arcadium")
