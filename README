@@ -4,7 +4,7 @@ This repository attempts to make it as simple as possible to integrate pyspotify
 
 It's currently as simple as
 >>> spotify_pro_credentials = { "spotify_name": "", "spotify_password": "" }
->>> Spotify(spotify_pro_credentials).play_album("Stadium Arcadium")
+>>> Spotify(spotify_pro_credentials).play("Stadium Arcadium", "albums")
 
 
 Initialization:
@@ -24,16 +24,13 @@ Information on installing dependencies at http://pyspotify.mopidy.com/en/latest/
 
 Usage:
 
-There are five methods you will use to play tracks: play_track, play_album, shuffle_album, play_artist, shuffle_artist
+The most important method is play(name, category, shuffle=False). Name is a free-form string that will be searched on Spotify (more info at http://news.spotify.com/us/2008/01/22/searching-spotify/). Category is one of "tracks", "artists", or "albums". Shuffle decides whether or not the music gets shuffled when played.
+
+If no results are found, there will be an error. (IndexError: list index out of range)
+
+The play() method does not block. They return immediately, while a different thread is started to play the music.
 
 There are four methods to control playback: next_track, pause, resume, and pause_toggle.
-
-All of the play methods takes a string that will be searched for in Spotify. The first result (of the appropriate category) will be used. It will error on no results. (IndexError: list index out of range)
-The string given is searched as is. For info on how to search Spotify intelligently, go to http://news.spotify.com/us/2008/01/22/searching-spotify/.
-
-The play_* methods play through all tracks sequentially. The shuffle_* methods play through all tracks in a random order.
-
-None of the methods block. They return immediately, while a different thread is started to play the music.
 
 These methods will cancel the currently playing song when called.
 

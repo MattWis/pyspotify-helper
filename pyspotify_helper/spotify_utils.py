@@ -13,30 +13,10 @@ def Spotify(profile = None):
 
 class _Spotify:
 
-  def play_track(self, name):
-    runner = lambda x: self._play(self._search(x, "tracks"))
-    start_new_thread(runner, (name, ))
-    self.playing = True
-
-  def play_album(self, name):
-    runner = lambda x: self._play_tracks(self._get_tracks(x, "albums"))
-    start_new_thread(runner, (name, ))
-    self.playing = True
-
-  def shuffle_album(self, name):
-    runner = lambda x: self._shuffle_seq(self._get_tracks(x, "albums"))
-    start_new_thread(runner, (name, ))
-    self.playing = True
-
-  def play_artist(self, name):
-    runner = lambda x: self._play_tracks(self._get_tracks(x, "artists"))
-    start_new_thread(runner, (name, ))
-    self.playing = True
-
-  def shuffle_artist(self, name):
-    runner = lambda x: self._shuffle_seq(self._get_tracks(x, "artists"))
-    start_new_thread(runner, (name, ))
-    self.playing = True
+  def play(self, name, category, shuffle=False):
+    if not category in ["tracks", "artists", "albums"]:
+      raise ValueError("Category must be 'tracks', 'artists', or 'albums'")
+    start_new_thread(self._search_and_play, (name, category, shuffle, ))
 
   def next_track(self):
     # Seek to the end of the song, 10,000,000 milliseconds > 2.5 hours
@@ -61,8 +41,18 @@ class _Spotify:
     self.session.player.load(track)
     self.session.player.play()
 
+  def _search_and_play(self, name, category, shuffle):
+    if category == "tracks":
+      self._play(self._search(x, category))
+    else:
+      track_list = self._get_tracks(name, category)
+      if shuffle:
+        self._shuffle_seq(track_list)
+      else:
+        self._play_tracks(track_list)
+    self.playing = True
+
   #Returns best search result
-  #category is "tracks", "artists", or "albums"
   def _search(self, term, category):
     return getattr(self.session.search(term).load(), category)[0].load()
 
@@ -125,14 +115,13 @@ if __name__ == "__main__":
   import time
   profile = yaml.load(open("profile.yml", 'rb').read())
 
-  Spotify(profile).play_album("Stadium Arcadium")
+  Spotify(profile).play("Stadium Arcadium", "albums")
   print("I can print while the song plays")
   time.sleep(2)
   Spotify().pause_toggle()
   time.sleep(2)
   Spotify().next_track()
   time.sleep(2)
-  Spotify().shuffle_artist("Taylor Swift")
-
+  Spotify().play("Taylor Swift", "artists", True)
 
   raw_input()
