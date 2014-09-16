@@ -42,8 +42,4 @@ Spotify() returns a singleton. The credentials only need to be passed in the fir
 
 TODO (As in, questions for you and my future self):
 
-I currently have the spotify session configured to use a PortAudio sink. Is that better than an ALSA sink? Are there other types I should look into?
-
 How does searching work with playlists? More specifically, can I easily distinguish between owned playlists and other playlists? What about playlists with the same name?
-
-How do I make this a thing that can be "pip install"-ed?
